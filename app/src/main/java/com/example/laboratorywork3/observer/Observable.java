@@ -1,4 +1,4 @@
-package com.example.laboratorywork2.observer;
+package com.example.laboratorywork3.observer;
 
 public interface Observable {
     void registerObserver(Observer o);

@@ -1,4 +1,4 @@
-package com.example.laboratorywork2;
+package com.example.laboratorywork3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.laboratorywork2.observer.Observer;
-import com.example.laboratorywork2.services.WriteAndReadService;
+import com.example.laboratorywork3.observer.Observer;
+import com.example.laboratorywork3.threads.WriteAndReadThreads;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ public class RecordsActivity extends AppCompatActivity implements Observer, Seri
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_records);
         textRecords = findViewById(R.id.records);
-        launchService(WriteAndReadService.ACTION_READ_FILE);
+        readFile();
         findViewById(R.id.home_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,13 +34,13 @@ public class RecordsActivity extends AppCompatActivity implements Observer, Seri
 
     @Override
     public void update(String message) {
-        runOnUiThread(() -> textRecords.setText(message));
+        textRecords.setText(message);
     }
 
-    private void launchService(String action) {
-        Intent intent = new Intent(this, WriteAndReadService.class);
-        intent.setAction(action);
-        intent.putExtra("observer", this);
-        startService(intent);
+    private void readFile() {
+        WriteAndReadThreads thread= new WriteAndReadThreads();
+        thread.registerObserver(this);
+        thread.readFile();
+        thread.start();
     }
 }

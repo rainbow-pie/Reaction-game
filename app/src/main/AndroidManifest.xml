@@ -52,7 +52,7 @@
         </activity>
         <service
             android:enabled="true"
-            android:name=".services.WriteAndReadService"
+            android:name=".threads.WriteAndReadThreads"
             android:exported="false">
         </service>
     </application>

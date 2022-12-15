@@ -1,6 +1,7 @@
-package com.example.laboratorywork2;
+package com.example.laboratorywork3;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.laboratorywork2.observer.Observer;
-import com.example.laboratorywork2.services.WriteAndReadService;
+
+import com.example.laboratorywork3.observer.Observer;
+import com.example.laboratorywork3.threads.WriteAndReadThreads;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class GameActivity extends AppCompatActivity implements Observer, Serializable {
 
@@ -77,7 +83,7 @@ public class GameActivity extends AppCompatActivity implements Observer, Seriali
                     gameTimerText.setText("Finish!");
                     resetTimer();
                     pointsDialog();
-                    launchService(WriteAndReadService.ACTION_WRITE_TO_FILE);
+                    writeToFile();
                 }
             }.start();
             createTable();
@@ -224,18 +230,20 @@ public class GameActivity extends AppCompatActivity implements Observer, Seriali
                 .show();
     }
 
-    private void launchService(String action) {
-        Bundle bundle = new Bundle();
-        bundle.putString(WriteAndReadService.GRIDSIZES, gridSize);
-        bundle.putString(WriteAndReadService.TIMER, timer);
-        bundle.putString(WriteAndReadService.FRAMERATES, frameRates);
-        bundle.putString(WriteAndReadService.POINTS, String.valueOf(mPoints));
+    private String createRecord() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String date = String.valueOf(dtf.format(now));
+        String result = date + "\n\nGrid size: " + gridSize + "\nTimer: " + timer + "\nFrame rate range: " + frameRates + "\nPoints: " + mPoints + "\n\n\n";
 
-        Intent intent = new Intent(this, WriteAndReadService.class);
-        intent.setAction(action);
-        intent.putExtra("observer", this);
-        intent.putExtras(bundle);
-        startService(intent);
+        return result;
+    }
+    private void writeToFile() {
+        WriteAndReadThreads thread= new WriteAndReadThreads();
+        thread.registerObserver(this);
+        String record = createRecord();
+        thread.writeToFile(record);
+        thread.start();
     }
 
     @Override
