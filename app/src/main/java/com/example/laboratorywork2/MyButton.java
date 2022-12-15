@@ -1,4 +1,4 @@
-package com.example.reactiongame;
+package com.example.laboratorywork2;
 
 import android.content.Context;
 import androidx.appcompat.widget.AppCompatButton;

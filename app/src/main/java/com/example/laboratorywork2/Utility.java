@@ -1,5 +1,4 @@
-package com.example.reactiongame;
-
+package com.example.laboratorywork2;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

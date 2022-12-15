@@ -1,12 +1,11 @@
-package com.example.reactiongame;
-
+package com.example.laboratorywork2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -15,9 +14,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_screen);
+        setContentView(R.layout.activity_splash_screen);
 
-        getSupportActionBar().hide();
         Handler handler = new Handler();
 
         handler.postDelayed(() -> {
@@ -25,7 +23,7 @@ public class SplashScreen extends AppCompatActivity {
                 startMainActivity();
         }, 3000);
 
-        RelativeLayout layout = findViewById(R.id.splashScreenLayout);
+        LinearLayout layout = findViewById(R.id.splashScreenLayout);
         layout.setOnClickListener((View view)-> startMainActivity());
     }
 
